@@ -622,6 +622,7 @@ function CREReader:adjustCreReaderCommands()
 		Keydef:new(KEY_LPGBCK,MOD_SHIFT),Keydef:new(KEY_LPGFWD,MOD_SHIFT)},
 		"increase/decrease font size",
 		function(self)
+			self.toc = nil
 			local delta = 1
 			local change = "Increasing"
 			if keydef.keycode == KEY_PGBCK or keydef.keycode == KEY_LPGBCK then
@@ -641,6 +642,7 @@ function CREReader:adjustCreReaderCommands()
 		Keydef:new(KEY_LPGBCK,MOD_ALT),Keydef:new(KEY_LPGFWD,MOD_ALT)},
 		"increase/decrease line spacing",
 		function(self)
+			self.toc = nil
 			if keydef.keycode == KEY_PGBCK or keydef.keycode == KEY_LPGBCK then
 				self.line_space_percent = self.line_space_percent - 10
 				self.line_space_percent = math.max(self.line_space_percent, 80)
@@ -688,9 +690,10 @@ function CREReader:adjustCreReaderCommands()
 			self:redrawCurrentPage()
 		end
 	)
-	self.commands:add(KEY_F, nil, "F",
+	self.commands:add({KEY_F, KEY_AA}, nil, "F",
 		"change document font",
 		function(self)
+			self.toc = nil
 			local face_list = cre.getFontFaces()
 			-- define the current font in face_list
 			local item_no = 0
